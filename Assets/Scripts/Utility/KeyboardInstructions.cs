@@ -1,23 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class KeyboardInstructions : MonoBehaviour
 {
-    private PlayerController _player;
-
-    private void Awake()
-    {
-        _player = PlayerController.Instance;
-    }
     private void OnEnable()
     {
-        _player.ControlInputAssigned += OnControlInputAssigned;
+        PlayerController.Instance.ControlInputAssigned += OnControlInputAssigned;
     }
 
     private void OnDisable()
     {
-        
+        if(PlayerController.Instance)
+            PlayerController.Instance.ControlInputAssigned -= OnControlInputAssigned;
     }
 
     private void OnControlInputAssigned(ControlInputs inputs)

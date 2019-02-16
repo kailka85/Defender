@@ -54,8 +54,6 @@ public class LevelManager : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI _levelTxt;
 
-    
-
     private void Awake()
     {
         _player = PlayerController.Instance.transform;
@@ -81,7 +79,6 @@ public class LevelManager : MonoBehaviour
     {
         _enemyReserve = _levelData.EnemyStartReserve * CurrentLevel;
         _enemyReserveOrig = _enemyReserve;
-        //_spawnDistInterval = Mathf.Max(2, levelData.SpawnStartInterval - CurrentLevel);     //?
         _spawnDistInterval = _levelData.SpawnStartInterval;
         _spawnDistIntervalOrig = _spawnDistInterval;
     }
@@ -115,8 +112,7 @@ public class LevelManager : MonoBehaviour
                 SpawnNewEnemy();
 
                 ReduceEnemySpawnInterval();
-
-                _spawnDistance = _player.position.x + _spawnDistInterval;
+                SetNewSpawnDistance();
             }
         }
     }
@@ -167,8 +163,12 @@ public class LevelManager : MonoBehaviour
 
     private void ReduceEnemySpawnInterval()
     {
-        //float reducedInterval = _spawnDistIntervalOrig * ((float)_enemyReserve / _enemyReserveOrig);
         float reducedInterval = _spawnDistInterval * _levelData.IntervalMultiplier;
         _spawnDistInterval = Mathf.Max(_levelData.MinSpawnInterval, reducedInterval);
+    }
+
+    private void SetNewSpawnDistance()
+    {
+        _spawnDistance = _player.position.x + _spawnDistInterval;
     }
 }
