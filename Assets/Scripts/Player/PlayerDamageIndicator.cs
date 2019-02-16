@@ -1,13 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [System.Serializable]
-public class DamageIndicator
+public class PlayerDamageIndicator
 {
-    public string Name;
+    public string IndicatorName;
     public GameObject Effect;
-    public float HealthRatioThreshold = 0.5f;
+
+    [Tooltip("Effect activates when health drops below this level.")]
+    public float HealthRatioThreshold;
 
     private bool _effectOn;
 

@@ -2,15 +2,15 @@
 
 public class EnemyMissile : MonoBehaviour
 {
-    private const float TARGET_LOCK_DELAY = 0.2f;
     private Transform _playerT;
+
+    private bool _targetLocked;
+    private const float TARGET_LOCK_DELAY = 0.2f;
 
     [SerializeField]
     private float _speed;
     [SerializeField]
     private float _rotateSpeed;
-
-    private bool _targetLocked;
 
     private void Awake()
     {
@@ -23,8 +23,9 @@ public class EnemyMissile : MonoBehaviour
     {
         _targetLocked = false;
 
-        //Enemy rockets are added to the list as they can be targeted by player rockets.
-        EnemiesManager.Instance.AddEnemyToList(transform);
+        //Enemy rockets are added to the enemy list as they can be targeted by player rockets.
+        if(EnemiesManager.Instance)
+            EnemiesManager.Instance.AddEnemyToList(transform);
 
         Invoke("LockTarget", TARGET_LOCK_DELAY);
     }
@@ -42,12 +43,17 @@ public class EnemyMissile : MonoBehaviour
 
     void Update()
     {
-        transform.Translate(Vector3.forward * Time.deltaTime * _speed);
+        MoveForward();
 
         if (_targetLocked && _playerT)
         {
             RotateTowardsPlayer();
         }
+    }
+
+    private void MoveForward()
+    {
+        transform.Translate(Vector3.forward * Time.deltaTime * _speed);
     }
 
     private void RotateTowardsPlayer()

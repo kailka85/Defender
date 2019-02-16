@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
 using TMPro;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 
 public class ScoreManager : MonoBehaviour
 {
@@ -17,42 +15,25 @@ public class ScoreManager : MonoBehaviour
     }
 
     private GameData _gameData;
-    private string _gameDataFilename = "HighScores.data";
+    private string _gameDataFileName = "GameData.data";
 
     private int _currentScore;
 
+    [Header("Level completed section")]
     [SerializeField]
     private TextMeshProUGUI _levelCompletedTxt;
     [SerializeField]
     private TextMeshProUGUI _finalScoreTxt;
     [SerializeField]
     private TextMeshProUGUI _levelHighScoreTxt;
+
+    [Header("Current running score")]
     [SerializeField]
     private TextMeshProUGUI _currentScoreTxt;
 
     private void Awake()
     {
-        _gameData = LoadGameData();
-    }
-
-    private GameData LoadGameData()
-    {
-        string filePath = Path.Combine(Application.persistentDataPath, _gameDataFilename);
-
-        if (File.Exists(filePath))
-        {
-            FileStream file = File.Open(filePath, FileMode.Open);
-            BinaryFormatter bf = new BinaryFormatter();
-            GameData gameData = (GameData)bf.Deserialize(file);
-            file.Close();
-
-            return gameData;
-        }
-        else
-        {
-            var gameData = new GameData();
-            return gameData;
-        }
+        _gameData = SaveAndLoad.LoadGameData(_gameDataFileName);
     }
 
     private void OnEnable()
@@ -94,7 +75,7 @@ public class ScoreManager : MonoBehaviour
             {
                 gameData.LevelHighScores[currentLevelName] = _currentScore;
                 levelHighScore = _currentScore;
-                SaveGameData(gameData);
+                SaveAndLoad.SaveGameData(gameData, _gameDataFileName);
             }
             else
             {
@@ -105,18 +86,9 @@ public class ScoreManager : MonoBehaviour
         {
             levelHighScore = _currentScore;
             gameData.LevelHighScores.Add(currentLevelName, _currentScore);
-            SaveGameData(gameData);
+            SaveAndLoad.SaveGameData(gameData, _gameDataFileName);
         }
 
         _levelHighScoreTxt.text = "Level high score: \n" + levelHighScore;
-    }
-
-    private void SaveGameData(GameData gameData)
-    {
-        string filePath = Path.Combine(Application.persistentDataPath, _gameDataFilename);
-        FileStream file = File.Create(filePath);
-        BinaryFormatter bf = new BinaryFormatter();
-        bf.Serialize(file, gameData);
-        file.Close();
     }
 }

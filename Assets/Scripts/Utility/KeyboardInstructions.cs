@@ -4,7 +4,8 @@ public class KeyboardInstructions : MonoBehaviour
 {
     private void OnEnable()
     {
-        PlayerController.Instance.ControlInputAssigned += OnControlInputAssigned;
+        if (PlayerController.Instance)
+            PlayerController.Instance.ControlInputAssigned += OnControlInputAssigned;
     }
 
     private void OnDisable()

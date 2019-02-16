@@ -4828,11 +4828,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe363448716d3b540ab42000bc228880, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _health: 45
   _explosion: {fileID: 777371384264837429, guid: db4001a11f39bbf4ebd643fbd4ea762d,
     type: 3}
   _damageEffect: {fileID: 8564691080871076833, guid: 29367f8159012c241bc8af19305737e4,
     type: 3}
-  _health: 45
   _scorePoints: 30
 --- !u!114 &6505198663732167651
 MonoBehaviour:
@@ -4846,5 +4846,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1f89cd8ffa783146b8a0a6f20e989c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _speed: 3
   _amplitude: 0.3
-  _frequency: 3

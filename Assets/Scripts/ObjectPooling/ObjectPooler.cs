@@ -3,13 +3,6 @@ using UnityEngine;
 
 public class ObjectPooler : MonoBehaviour
 {
-    [System.Serializable]
-    public class PoolableObject
-    {
-        public GameObject Prefab;
-        public int PreWarmCount;
-    }
-
     private static ObjectPooler _instance;
     public static ObjectPooler Instance
     {
@@ -22,22 +15,23 @@ public class ObjectPooler : MonoBehaviour
     }
 
     [SerializeField]
-    private PoolableObject[] poolableObjects;
+    private PoolableObject[] _poolableObjects;
+
     private Dictionary<GameObject, Queue<GameObject>> container = new Dictionary<GameObject, Queue<GameObject>>();
 
     private void Awake()
     {
-        for (int i = 0; i < poolableObjects.Length; i++)
+        for (int i = 0; i < _poolableObjects.Length; i++)
         {
             Queue<GameObject> objectQueue = new Queue<GameObject>();
-            for (int j = 0; j < poolableObjects[i].PreWarmCount; j++)
+            for (int j = 0; j < _poolableObjects[i].PreWarmCount; j++)
             {
-                var go = CreateObject(poolableObjects[i].Prefab);
+                var go = CreateObject(_poolableObjects[i].Prefab);
 
                 objectQueue.Enqueue(go);
             }
 
-            container.Add(poolableObjects[i].Prefab, objectQueue);
+            container.Add(_poolableObjects[i].Prefab, objectQueue);
         }
     }
 
@@ -72,8 +66,10 @@ public class ObjectPooler : MonoBehaviour
 
             obj.transform.rotation = rotation;
             obj.transform.position = position;
+
             if (parent)
                 obj.transform.parent = parent;
+
             obj.SetActive(true);
 
             return obj;
@@ -90,7 +86,9 @@ public class ObjectPooler : MonoBehaviour
         if (container.ContainsKey(prefab))
         {
             container[prefab].Enqueue(obj);
+
             obj.transform.parent = transform;
+
             obj.SetActive(false);
         }
         else

@@ -5,6 +5,7 @@ public class LevelBoundaryGuardian : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         IPoolableObject poolableObj = other.GetComponent<IPoolableObject>();
+
         if (poolableObj != null)
         {
             poolableObj.PutBackToPool();

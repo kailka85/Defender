@@ -3,25 +3,30 @@
 public class UIPanelManager : MonoBehaviour
 {
     [SerializeField]
-    private GameObject 
-        mainMenuPanel, 
-        gamePlayPanel,
-        mobileControlsPanel,
-        levelCompletedPanel, 
-        gameOverPanel;
+    private GameObject
+        _mainMenuPanel,
+        _gamePlayPanel,
+        _mobileControlsPanel,
+        _levelCompletedPanel,
+        _gameOverPanel;
 
     private void OnEnable()
     {
-        PlayerController.Instance.ControlInputAssigned += OnControlInputAssigned;
-        GameManager.Instance.MainMenuEntered += OnMainMenuEntered;
-        GameManager.Instance.GamePlayStarted += OnGamePlayStarted;
-        GameManager.Instance.GameOver += OnGameOver;
-        GameManager.Instance.LevelCompleted += OnLevelCompleted;
+        if (PlayerController.Instance)
+            PlayerController.Instance.ControlInputAssigned += OnControlInputAssigned;
+
+        if (GameManager.Instance)
+        {
+            GameManager.Instance.MainMenuEntered += OnMainMenuEntered;
+            GameManager.Instance.GamePlayStarted += OnGamePlayStarted;
+            GameManager.Instance.GameOver += OnGameOver;
+            GameManager.Instance.LevelCompleted += OnLevelCompleted;
+        }
     }
 
     private void OnDisable()
     {
-        if(PlayerController.Instance)
+        if (PlayerController.Instance)
             PlayerController.Instance.ControlInputAssigned -= OnControlInputAssigned;
 
         if (GameManager.Instance)
@@ -38,34 +43,34 @@ public class UIPanelManager : MonoBehaviour
         switch (inputs)
         {
             case ControlInputs.Keyboard:
-                mobileControlsPanel.SetActive(false);
+                _mobileControlsPanel.SetActive(false);
                 break;
             case ControlInputs.Mobile:
-                mobileControlsPanel.SetActive(true);
+                _mobileControlsPanel.SetActive(true);
                 break;
         }
     }
 
     private void OnMainMenuEntered()
     {
-        mainMenuPanel.SetActive(true);
+        _mainMenuPanel.SetActive(true);
     }
 
     private void OnGamePlayStarted()
     {
-        mainMenuPanel.SetActive(false);
-        gamePlayPanel.SetActive(true);
+        _mainMenuPanel.SetActive(false);
+        _gamePlayPanel.SetActive(true);
     }
 
     private void OnGameOver()
     {
-        gamePlayPanel.SetActive(false);
-        gameOverPanel.SetActive(true);
+        _gamePlayPanel.SetActive(false);
+        _gameOverPanel.SetActive(true);
     }
 
     private void OnLevelCompleted()
     {
-        gamePlayPanel.SetActive(false);
-        levelCompletedPanel.SetActive(true);
+        _gamePlayPanel.SetActive(false);
+        _levelCompletedPanel.SetActive(true);
     }
 }

@@ -18,28 +18,13 @@ public class LevelManager : MonoBehaviour
     public static int CurrentLevel { get; set; } = 1;
 
     private const int SPAWN_X_OFFSET = 11;
-    private const int SHOW_LEVELCOMPLETED_DELAY = 2;
-
-    [System.Serializable]
-    public class LevelData
-    {
-        //A new enemy is spawned when the player advances this distance.
-        //The distance reduces after each spawn (not below the minimum value however) resulting in increased difficulty.
-        public float SpawnStartInterval;
-        public float MinSpawnInterval;
-        public float IntervalMultiplier;
-        //When an enemy is spawned, the corresponding enemy size number is substracted from the reserve. Enemies are spawned until the reserve runs empty.
-        //The start reserve is multiplied with the current level number.
-        public int EnemyStartReserve;
-
-        public Enemy[] Enemies;
-    }
+    private const int LEVEL_COMPLETED_DELAY = 2;
 
     [SerializeField]
-    private Boundaries _boundaries;
+    private Boundaries _yBoundaries;
 
     [SerializeField]
-    private LevelData _levelData;
+    private LevelBaseData _levelData;
 
     private float _spawnDistance;
     private float _spawnDistInterval;
@@ -52,7 +37,7 @@ public class LevelManager : MonoBehaviour
     private Transform _player;
 
     [SerializeField]
-    private TextMeshProUGUI _levelTxt;
+    private TextMeshProUGUI _levelNumberTxt;
 
     private void Awake()
     {
@@ -62,8 +47,11 @@ public class LevelManager : MonoBehaviour
 
     private void OnEnable()
     {
-        GameManager.Instance.GamePlayStarted += OnGamePlayStarted;
-        GameManager.Instance.GameOver += OnGameOver;
+        if (GameManager.Instance)
+        {
+            GameManager.Instance.GamePlayStarted += OnGamePlayStarted;
+            GameManager.Instance.GameOver += OnGameOver;
+        }
     }
 
     private void OnDisable()
@@ -85,7 +73,7 @@ public class LevelManager : MonoBehaviour
 
     private void OnGamePlayStarted()
     {
-        _levelTxt.text = "Level " + CurrentLevel;
+        _levelNumberTxt.text = "Level " + CurrentLevel;
 
         StartCoroutine(MonitorPlayerProgression());
     }
@@ -105,7 +93,7 @@ public class LevelManager : MonoBehaviour
             {
                 if (EnemyReserveDepleted())
                 {
-                    StartCoroutine(WaitLastEnemiesToDie());
+                    StartCoroutine(WaitLastEnemiesToDisappear());
                     yield break;
                 }
 
@@ -127,14 +115,14 @@ public class LevelManager : MonoBehaviour
         return _enemyReserve <= 0;
     }
 
-    IEnumerator WaitLastEnemiesToDie()
+    IEnumerator WaitLastEnemiesToDisappear()
     {
         while (EnemiesAlive())
         {
             yield return null;
         }
 
-        yield return new WaitForSeconds(SHOW_LEVELCOMPLETED_DELAY);
+        yield return new WaitForSeconds(LEVEL_COMPLETED_DELAY);
 
         GameManager.Instance.GameStateChanged(GAME_STATE.LEVEL_COMPLETED);
     }
@@ -148,7 +136,7 @@ public class LevelManager : MonoBehaviour
     {
         Enemy enemy = GetRandomEnemyFromReserve();
 
-        var location = new Vector3(_cameraT.position.x + SPAWN_X_OFFSET, Random.Range(_boundaries.Ymin, _boundaries.YMax), 0);
+        var location = new Vector3(_cameraT.position.x + SPAWN_X_OFFSET, Random.Range(_yBoundaries.Ymin, _yBoundaries.YMax), 0);
 
         ObjectPooler.Instance.GiveObject(enemy.gameObject, location, enemy.transform.rotation);
     }

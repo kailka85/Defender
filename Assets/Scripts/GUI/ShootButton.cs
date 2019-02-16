@@ -4,17 +4,17 @@ public class ShootButton : MonoBehaviour
 {
     public static bool IsPressed { get; private set; }
 
-    void Start()
+    void Awake()
     {
         IsPressed = false;
     }
 
-    public void ButtonPressed()
+    public void ShootButtonPressed()
     {
         IsPressed = true;
     }
 
-    public void ButtonReleased()
+    public void ShootButtonReleased()
     {
         IsPressed = false;
     }

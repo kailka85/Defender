@@ -2,17 +2,17 @@
 
 public class FloatingObject : MonoBehaviour
 {
-    private const float MULTIPLIER = 0.01f;
-
+    [SerializeField]
+    private float _speed;
     [SerializeField]
     private float _amplitude;
-    [SerializeField]
-    private float _frequency;
 
-    private int value;
+    private float _runningValue;
+    private const float INCREMENT = 0.01f;
 
     void Update()
     {
-        transform.Translate((Vector3.up * Mathf.Cos(_frequency * value++ * MULTIPLIER) * _amplitude) * Time.deltaTime, Space.World);
+        _runningValue += INCREMENT;
+        transform.Translate((Vector3.up * Mathf.Cos(_speed * _runningValue) * _amplitude) * Time.deltaTime, Space.World);
     }
 }

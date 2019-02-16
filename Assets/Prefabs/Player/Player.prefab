@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 295138208}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.42, y: -0.041, z: -0.085}
+  m_LocalPosition: {x: -0.5, y: -0.041, z: -0.085}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4344533936178937286}
@@ -54,7 +54,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 940755807}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.419, y: -0.041, z: -0.085}
+  m_LocalPosition: {x: 0.5, y: -0.041, z: -0.085}
   m_LocalScale: {x: 1.0000044, y: 1.0000039, z: 1.0000044}
   m_Children: []
   m_Father: {fileID: 4344533936178937286}
@@ -72,7 +72,7 @@ GameObject:
   - component: {fileID: 1310834197}
   - component: {fileID: 1310721973}
   m_Layer: 0
-  m_Name: SteamMobile
+  m_Name: Smoke
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4552,7 +4552,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ed1b89d39279f564ea077ad8e46f3595, type: 2}
+  - {fileID: 2100000, guid: 97de08415789a694eb7b2ac89fd4e9d9, type: 2}
   - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -9480,20 +9480,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a5639ec7dd785e43adc576edc8a0af7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _verticalBoundaries: {fileID: 11400000, guid: dd7beee3e62dae346b0746eba56681d6,
-    type: 2}
-  speedSettings:
-    VerticalMaxSpeed: 6
-    HorizontalMaxSpeed: 1.5
-    HorizontalMinSpeed: 0.7
-    HorizontalDefaultSpeed: 1.8
+  _yBoundaries: {fileID: 11400000, guid: dd7beee3e62dae346b0746eba56681d6, type: 2}
+  _speedSettings:
+    VerticalSpeed: 6.5
+    HorizontalDefaultSpeed: 2.5
+    HorizontalExtraMaxSpeed: 2
+    HorizontalMinSpeed: 1
     MaxTiltAngle: 15
-  primaryWeapon: {fileID: 11400000, guid: c442f0b4ad221a34ca8c4b446be57812, type: 2}
-  secondaryWeapon: {fileID: 11400000, guid: e738051ddc82c25408e1d12dd93d3a3f, type: 2}
-  shootPositionPrimary: {fileID: 4344533935902237992}
-  shootPositionSecondaryL: {fileID: 295138209}
-  shootPositionSecondaryR: {fileID: 940755808}
-  controlInputs: 0
+  _primaryWeapon: {fileID: 11400000, guid: c442f0b4ad221a34ca8c4b446be57812, type: 2}
+  _secondaryWeapon: {fileID: 11400000, guid: e738051ddc82c25408e1d12dd93d3a3f, type: 2}
+  _shootPositionPrimary: {fileID: 4344533935902237992}
+  _shootPositionSecondaryL: {fileID: 295138209}
+  _shootPositionSecondaryR: {fileID: 940755808}
+  _controlInputs: 0
 --- !u!114 &8490399113027463095
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9506,10 +9505,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b2731684c96eef47a9e9e7bca0a680a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _healthMax: 100
+  _healthMax: 70
   _crashDamageMultiplier: 0.2
-  _smokeEffect: {fileID: 1326327669}
-  _fireEffect: {fileID: 2508726922201858479}
+  _damageIndicators:
+  - IndicatorName: Smoke
+    Effect: {fileID: 1326327669}
+    HealthRatioThreshold: 0.6
+  - IndicatorName: Fire
+    Effect: {fileID: 2508726922201858479}
+    HealthRatioThreshold: 0.3
   _explosion: {fileID: 777371384264837429, guid: db4001a11f39bbf4ebd643fbd4ea762d,
     type: 3}
 --- !u!65 &4344533936179028455
@@ -9537,8 +9541,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1f89cd8ffa783146b8a0a6f20e989c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _amplitude: 0.5
-  _frequency: 10
+  _speed: 5
+  _amplitude: 0.7
 --- !u!1 &4344533936179028456
 GameObject:
   m_ObjectHideFlags: 0

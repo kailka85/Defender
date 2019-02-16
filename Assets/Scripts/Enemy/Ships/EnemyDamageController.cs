@@ -2,21 +2,21 @@
 
 public class EnemyDamageController : MonoBehaviour, IDestructible, IPoolableObject
 {
-    [SerializeField]
-    private GameObject _explosion;
-    [SerializeField]
-    private GameObject _damageEffect;
+    public GameObject Prefab { get; set; }
+
+    public int Health { get { return _health; } }
 
     [SerializeField]
     protected int _health;
     private int _healthOrig;
 
     [SerializeField]
+    private GameObject _explosion;
+    [SerializeField]
+    private GameObject _damageEffect;
+
+    [SerializeField]
     protected int _scorePoints;
-
-    public GameObject Prefab { get; set; }
-
-    public int Health { get { return _health; } }
 
     private void Awake()
     {

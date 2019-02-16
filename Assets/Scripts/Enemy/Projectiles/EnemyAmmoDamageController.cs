@@ -2,20 +2,17 @@
 
 public class EnemyAmmoDamageController : MonoBehaviour, IDestructible, IPoolableObject
 {
+    public GameObject Prefab { get; set; }
+
     [SerializeField]
     protected int _health;
     private int _healthOrig;
+    public int Health { get { return _health; } }
+
     [SerializeField]
     private int _damage;
     [SerializeField]
     private GameObject _destructEffect;
-
-    [SerializeField]
-    private int _scorePoints;
-
-    public GameObject Prefab { get; set; }
-
-    public int Health { get { return _health; } }
 
     private void Awake()
     {
@@ -24,16 +21,16 @@ public class EnemyAmmoDamageController : MonoBehaviour, IDestructible, IPoolable
 
     private void OnTriggerEnter(Collider other)
     {
-        if (IsPlayer(other))
+        if (HitPlayer(other))
         {
-            var player = other.gameObject.GetComponent<IDestructible>();
-            player.TakeDamage(_damage);
+            var playerDestructible = other.gameObject.GetComponent<IDestructible>();
+            playerDestructible.TakeDamage(_damage);
 
             DestroyThis();
         }
     }
 
-    private static bool IsPlayer(Collider other)
+    private static bool HitPlayer(Collider other)
     {
         return other.GetComponent<PlayerController>() && other.GetComponent<IDestructible>() != null;
     }
@@ -44,7 +41,6 @@ public class EnemyAmmoDamageController : MonoBehaviour, IDestructible, IPoolable
         if (_health <= 0)
         {
             DestroyThis();
-            ScoreManager.Instance.IncreaseScore(_scorePoints);
         }
     }
 

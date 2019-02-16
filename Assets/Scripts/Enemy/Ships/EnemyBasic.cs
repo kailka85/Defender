@@ -3,21 +3,14 @@ using UnityEngine;
 
 public class EnemyBasic : Enemy
 {
-    [System.Serializable]
-    public class BasicShootingSettings
-    {
-        public float Firerate;
-        public float ShootStartDelay;
-        public Transform ShootPosition;
-        public GameObject Ammo;
-    }
-
     [SerializeField]
-    private BasicShootingSettings _shootSettings;
+    private EnemyBasicShootingSettings _shootSettings;
 
     protected override void OnEnable()
     {
-        EnemiesManager.Instance.AddEnemyToList(transform);
+        if (EnemiesManager.Instance)
+            EnemiesManager.Instance.AddEnemyToList(transform);
+
         StartCoroutine(Shooting());
 
     }

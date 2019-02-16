@@ -26,7 +26,7 @@ public class MobileControlInput : IControlInput
         }
     }
 
-    public bool GetShootSecondarytInput
+    public bool GetShootSecondaryInput
     {
         get
         {

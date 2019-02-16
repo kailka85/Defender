@@ -26,7 +26,7 @@ public class KeyboardControlInput : IControlInput
         }
     }
 
-    public bool GetShootSecondarytInput
+    public bool GetShootSecondaryInput
     {
         get
         {

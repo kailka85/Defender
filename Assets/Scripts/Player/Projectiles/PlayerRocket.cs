@@ -14,7 +14,8 @@ public class PlayerRocket : MonoBehaviour
         _currentTarget = null;
         LockTarget();
 
-        EnemiesManager.Instance.EnemyDestroyed += OnEnemyRemoved;
+        if (EnemiesManager.Instance)
+            EnemiesManager.Instance.EnemyDestroyed += OnEnemyRemoved;
     }
 
     private void OnDisable()

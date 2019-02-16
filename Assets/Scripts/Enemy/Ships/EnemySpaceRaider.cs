@@ -1,16 +1,16 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class EnemySpaceRaider : EnemyBasic
 {
     private Transform _playerT;
+
+    private bool _isMoving;
 
     [SerializeField]
     protected float _moveLerpSpeed;
     [SerializeField]
     private float _rotateSpeed;
 
-    private bool _isMoving;
     [SerializeField]
     private float _minDistanceFromPlayer;
     [SerializeField]
@@ -34,7 +34,7 @@ public class EnemySpaceRaider : EnemyBasic
         if (_isMoving && _playerT)
         {
             SetDistanceFromPlayer();
-            GetLocationNearPlayer();
+            SetDirectionFromPlayer();
         }
     }
 
@@ -43,7 +43,7 @@ public class EnemySpaceRaider : EnemyBasic
         _distanceFromPlayer = Random.Range(_minDistanceFromPlayer, _maxDistanceFromPlayer);
     }
 
-    private void GetLocationNearPlayer()
+    private void SetDirectionFromPlayer()
     {
         _dirFromPlayer = (transform.position - _playerT.position).normalized;
     }

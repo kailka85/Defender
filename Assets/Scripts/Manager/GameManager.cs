@@ -88,7 +88,7 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    public void RestartGame()
+    public void RestartLevel()
     {
         _restarted = true;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);

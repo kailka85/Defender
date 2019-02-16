@@ -2,10 +2,10 @@
 
 public class PlayerAmmoDamageController : MonoBehaviour, IPoolableObject
 {
+    public GameObject Prefab { get; set; }
+
     [SerializeField]
     private int _damage;
-
-    public GameObject Prefab { get; set; }
 
     private void OnTriggerEnter(Collider other)
     {

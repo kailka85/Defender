@@ -8,7 +8,8 @@ public abstract class Enemy : MonoBehaviour
 
     protected virtual void OnEnable()
     {
-        EnemiesManager.Instance.AddEnemyToList(transform);
+        if (EnemiesManager.Instance)
+            EnemiesManager.Instance.AddEnemyToList(transform);
     }
 
     protected virtual void OnDisable()

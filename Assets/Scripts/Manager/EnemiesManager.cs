@@ -15,32 +15,32 @@ public class EnemiesManager : MonoBehaviour
         }
     }
 
-    private List<Transform> enemiesList = new List<Transform>();
+    private List<Transform> _enemiesList = new List<Transform>();
     public event Action<Transform> EnemyDestroyed = delegate { };
 
     public void AddEnemyToList(Transform enemyT)
     {
-        enemiesList.Add(enemyT);
+        _enemiesList.Add(enemyT);
     }
 
     public void RemoveEnemyFromList(Transform enemyT)
     {
-        enemiesList.Remove(enemyT);
+        _enemiesList.Remove(enemyT);
 
         EnemyDestroyed(enemyT);
     }
 
     public Transform GetRandomEnemy()
     {
-        if (enemiesList.Count > 0)
+        if (_enemiesList.Count > 0)
         {
-            return enemiesList[UnityEngine.Random.Range(0, enemiesList.Count)];
+            return _enemiesList[UnityEngine.Random.Range(0, _enemiesList.Count)];
         }
         return null;
     }
 
     public int GetEnemyListCount()
     {
-        return enemiesList.Count;
+        return _enemiesList.Count;
     }
 }

@@ -1,11 +1,10 @@
 ﻿[System.Serializable]
 public class PlayerSpeedSettings
 {
-    public float
-            VerticalMaxSpeed,
-            HorizontalMaxSpeed,
-            HorizontalMinSpeed,
-            HorizontalDefaultSpeed;
+    public float VerticalSpeed;
+    public float HorizontalDefaultSpeed;
+    public float HorizontalExtraMaxSpeed;
+    public float HorizontalMinSpeed;
 
     public float MaxTiltAngle;
 }

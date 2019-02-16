@@ -27,10 +27,13 @@ public class TextureOffsetScroll : MonoBehaviour
 
     private void ScrollTextureAccordingToCamSpeed()
     {
-        _scrollSpeedX = _originalXSpeed * _camFollow.Speed;
+        if (_camFollow)
+        {
+            _scrollSpeedX = _originalXSpeed * _camFollow.Speed;
 
-        _offsetX += Time.deltaTime * _scrollSpeedX;
+            _offsetX += Time.deltaTime * _scrollSpeedX;
 
-        _renderer.material.SetTextureOffset(MAINTEXT, new Vector2(_offsetX, _scrollSpeedY * Time.time));
+            _renderer.material.SetTextureOffset(MAINTEXT, new Vector2(_offsetX, _scrollSpeedY * Time.time));
+        }
     }
 }

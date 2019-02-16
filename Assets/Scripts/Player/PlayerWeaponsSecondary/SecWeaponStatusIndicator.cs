@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class SecondaryWeaponIndicator : MonoBehaviour
+public class SecWeaponStatusIndicator : MonoBehaviour
 {
     private Image _image;
 
@@ -12,13 +12,14 @@ public class SecondaryWeaponIndicator : MonoBehaviour
 
     private void OnEnable()
     {
-        PlayerController.Instance.SecWeapStatusChanged += OnSecWeapStatusChanged;
+        if (PlayerController.Instance)
+            PlayerController.Instance.SecWeaponStatusChanged += OnSecWeapStatusChanged;
     }
 
     private void OnDisable()
     {
         if(PlayerController.Instance)
-            PlayerController.Instance.SecWeapStatusChanged -= OnSecWeapStatusChanged;
+            PlayerController.Instance.SecWeaponStatusChanged -= OnSecWeapStatusChanged;
     }
 
     void OnSecWeapStatusChanged(bool active)

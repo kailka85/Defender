@@ -2,23 +2,23 @@
 
 public class PlayerDamageController : MonoBehaviour, IDestructible
 {
+    public int Health { get; private set; }
+
     [SerializeField]
     private int _healthMax;
 
     private int _crashDamage;
 
-    [Tooltip("Amount of max health lost when crashing with an enemy.")]
+    [Tooltip("Amount of max health lost (if left alive) when crashing with an enemy.")]
     [SerializeField]
     private float _crashDamageMultiplier;
 
     [Tooltip("Indicators are activated when health has decreased to a certain level.")]
     [SerializeField]
-    private DamageIndicator[] damageIndicators;
+    private PlayerDamageIndicator[] _damageIndicators;
 
     [SerializeField]
     private GameObject _explosion;
-
-    public int Health { get; private set; }
 
     private void Awake()
     {
@@ -32,7 +32,7 @@ public class PlayerDamageController : MonoBehaviour, IDestructible
 
         if (Health <= 0)
         {
-            Destruction();
+            DestroyThis();
             return;
         }
 
@@ -42,7 +42,8 @@ public class PlayerDamageController : MonoBehaviour, IDestructible
     private void CheckDamageIndicators()
     {
         float healthRatio = Health / (float)_healthMax;
-        foreach (var indicator in damageIndicators)
+
+        foreach (var indicator in _damageIndicators)
         {
             indicator.CheckIfShouldEnable(healthRatio);
         }
@@ -66,7 +67,7 @@ public class PlayerDamageController : MonoBehaviour, IDestructible
         var enemyDestructible = other.gameObject.GetComponent<IDestructible>();
 
         if (enemyDestructible.Health > Health)
-            TakeDamage(Health);
+            DestroyThis();
         else
         {
             enemyDestructible.TakeDamage(enemyDestructible.Health);
@@ -74,7 +75,7 @@ public class PlayerDamageController : MonoBehaviour, IDestructible
         }
     }
 
-    private void Destruction()
+    private void DestroyThis()
     {
         GameManager.Instance.GameStateChanged(GAME_STATE.GAME_OVER);
         ObjectPooler.Instance.GiveObject(_explosion, transform.position, transform.rotation);

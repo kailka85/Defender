@@ -11,14 +11,14 @@ public class PlayerRocketDamageController : MonoBehaviour, IPoolableObject
 
     private void OnTriggerEnter(Collider other)
     {
-        if (IsEnemy(other))
+        if (HitEnemy(other))
         {
             other.gameObject.GetComponent<IDestructible>().TakeDamage(_damage);
             DestroyThis();
         }
     }
 
-    private static bool IsEnemy(Collider other)
+    private static bool HitEnemy(Collider other)
     {
         return (other.GetComponent<Enemy>() || other.GetComponent<EnemyMissile>()) && other.GetComponent<IDestructible>() != null;
     }

@@ -2,26 +2,26 @@
 
 public class LaunchRocketsButton : MonoBehaviour
 {
-    private static bool launchRockets;
+    private static bool _launchRockets;
 
     private void Awake()
     {
-        launchRockets = false;
+        _launchRockets = false;
     }
 
     public static bool ShouldLaunchRockets()
     {
-        if (launchRockets)
+        if (_launchRockets)
         {
-            launchRockets = false;
+            _launchRockets = false;
             return true;
         }
 
         return false;
     }
 
-    public void ButtonPressed()
+    public void LaunchRocketsButtonPressed()
     {
-        launchRockets = true;
+        _launchRockets = true;
     }
 }
