@@ -2,8 +2,6 @@
 
 public class EnemySpaceRaider : EnemyBasic
 {
-    private Transform _playerT;
-
     private bool _isMoving;
 
     [SerializeField]
@@ -18,17 +16,15 @@ public class EnemySpaceRaider : EnemyBasic
     private float _distanceFromPlayer;
     private Vector3 _dirFromPlayer;
 
-    private void Awake()
-    {
-        var playerController = PlayerController.Instance;
-        if (playerController)
-            _playerT = playerController.transform;
-    }
-
     protected override void OnEnable()
     {
         base.OnEnable();
 
+        SetMovingTypeRandomly();
+    }
+
+    private void SetMovingTypeRandomly()
+    {
         _isMoving = (Random.value > 0.5f);
 
         if (_isMoving && _playerT)

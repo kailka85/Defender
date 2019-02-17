@@ -6,7 +6,7 @@ public class CameraFollowPlayer : MonoBehaviour
     private float _lerpSpeed;
 
     private Transform _playerT;
-    private float _playerXOffset;
+    private float _cameraXOffset;
 
     //Calculating camera speed which is used to scroll texture offset of the background elements
     public float Speed { get; private set; }
@@ -17,8 +17,13 @@ public class CameraFollowPlayer : MonoBehaviour
         if (PlayerController.Instance)
         {
             _playerT = PlayerController.Instance.transform;
-            _playerXOffset = _playerT.position.x - transform.position.x;
+            _cameraXOffset = _playerT.position.x - transform.position.x;
         }
+    }
+
+    public void AssignCamFollowXOffset(float XOffset)
+    {
+        _cameraXOffset = XOffset;
     }
 
     void LateUpdate()
@@ -33,7 +38,7 @@ public class CameraFollowPlayer : MonoBehaviour
 
     private void FollowPlayerXLocation()
     {
-        float newXPosition = Mathf.Lerp(transform.position.x, _playerT.position.x - _playerXOffset, _lerpSpeed * Time.deltaTime);
+        float newXPosition = Mathf.Lerp(transform.position.x, _playerT.position.x + _cameraXOffset, _lerpSpeed * Time.deltaTime);
         transform.position = new Vector3(newXPosition, transform.position.y, transform.position.z);
     }
 

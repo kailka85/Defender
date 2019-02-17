@@ -17,8 +17,11 @@ public class LevelManager : MonoBehaviour
 
     public static int CurrentLevel { get; set; } = 1;
 
-    private const int SPAWN_X_OFFSET = 11;
-    private const int LEVEL_COMPLETED_DELAY = 2;
+
+    private Vector3 _spawnLocation;
+
+    //Enemies are spawned at this distance to the right of right side of the screen.
+    private const float SPAWN_X_OFFSET = 1.5f;
 
     [SerializeField]
     private Boundaries _yBoundaries;
@@ -65,10 +68,35 @@ public class LevelManager : MonoBehaviour
 
     private void Start()
     {
+        InitializeLevelBaseValues();
+
+        AssignSpawnXLocation();
+    }
+
+    private void InitializeLevelBaseValues()
+    {
         _enemyReserve = _levelData.EnemyStartReserve * CurrentLevel;
         _enemyReserveOrig = _enemyReserve;
         _spawnDistInterval = _levelData.SpawnStartInterval;
         _spawnDistIntervalOrig = _spawnDistInterval;
+    }
+
+    //Set the spawn point relative to camera viewport while taking into account different screen aspect ratios.
+    private void AssignSpawnXLocation()
+    {
+        var camera = _cameraT.GetComponent<Camera>();
+
+        Vector3 viewportRightEdgeNearClip = camera.ViewportToWorldPoint(new Vector3(1, 0.5f, camera.nearClipPlane));
+        Vector3 viewPortRightEdgeFarClip = camera.ViewportToWorldPoint(new Vector3(1, 0.5f, camera.farClipPlane));
+
+        Vector3 direction = viewPortRightEdgeFarClip - viewportRightEdgeNearClip;
+
+        //Get the position on the game plane at the middle of the right edge of the screen. The game plane is z = 0;
+        float angle = Mathf.Cos(Vector3.Angle(camera.transform.forward, direction) * Mathf.Deg2Rad);
+        var distanceFromNearClipToGamePlane = Mathf.Abs(viewportRightEdgeNearClip.z) / angle;
+        var spawnLocationPosition = viewportRightEdgeNearClip + direction.normalized * distanceFromNearClipToGamePlane + Vector3.right * SPAWN_X_OFFSET;
+
+        _spawnLocation = _cameraT.InverseTransformPoint(spawnLocationPosition);
     }
 
     private void OnGamePlayStarted()
@@ -122,8 +150,6 @@ public class LevelManager : MonoBehaviour
             yield return null;
         }
 
-        yield return new WaitForSeconds(LEVEL_COMPLETED_DELAY);
-
         GameManager.Instance.GameStateChanged(GAME_STATE.LEVEL_COMPLETED);
     }
 
@@ -136,7 +162,7 @@ public class LevelManager : MonoBehaviour
     {
         Enemy enemy = GetRandomEnemyFromReserve();
 
-        var location = new Vector3(_cameraT.position.x + SPAWN_X_OFFSET, Random.Range(_yBoundaries.Ymin, _yBoundaries.YMax), 0);
+        var location = new Vector3((_cameraT.position + _spawnLocation).x, Random.Range(_yBoundaries.Ymin, _yBoundaries.YMax), 0);
 
         ObjectPooler.Instance.GiveObject(enemy.gameObject, location, enemy.transform.rotation);
     }

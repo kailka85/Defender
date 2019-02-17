@@ -4812,7 +4812,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _enemySize: 3
   _shootSettings:
-    Firerate: 3
+    Firerate: 3.5
     ShootStartDelay: 1.5
     ShootPosition: {fileID: 1198276464}
     Ammo: {fileID: 2498431256911054283, guid: 8d50b154f60fae44a8c8a642a1c31563, type: 3}

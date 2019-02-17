@@ -9,8 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 987f4170acd877b4293dd8654bd2692e, type: 3}
-  m_Name: Vertical Boundaries
+  m_Script: {fileID: 11500000, guid: 5fc9a27ce075bea4eb6b98c9ef012e78, type: 3}
+  m_Name: PlayerWeaponLaser
   m_EditorClassIdentifier: 
-  YMax: 5.84
-  Ymin: -2.47
+  ShootDelay: 0.14
+  Projectile: {fileID: 5536790120178111201, guid: 1a3929020a958c14b89ab310d2cc9d78,
+    type: 3}

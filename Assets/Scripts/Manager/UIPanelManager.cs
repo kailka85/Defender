@@ -10,6 +10,9 @@ public class UIPanelManager : MonoBehaviour
         _levelCompletedPanel,
         _gameOverPanel;
 
+    private const int GAME_OVER_DISPLAY_DELAY = 2;
+    private const int LEVEL_COMPLETED_DISPLAY_DELAY = 2;
+
     private void OnEnable()
     {
         if (PlayerController.Instance)
@@ -64,11 +67,21 @@ public class UIPanelManager : MonoBehaviour
 
     private void OnGameOver()
     {
+        Invoke("DisplayGameOverPanel", GAME_OVER_DISPLAY_DELAY);
+    }
+
+    private void DisplayGameOverPanel()
+    {
         _gamePlayPanel.SetActive(false);
         _gameOverPanel.SetActive(true);
     }
 
     private void OnLevelCompleted()
+    {
+        Invoke("DisplayLevelCompletedPanel", LEVEL_COMPLETED_DISPLAY_DELAY);
+    }
+
+    private void DisplayLevelCompletedPanel()
     {
         _gamePlayPanel.SetActive(false);
         _levelCompletedPanel.SetActive(true);

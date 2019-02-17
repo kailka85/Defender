@@ -4,21 +4,24 @@ using UnityEngine;
 public class EnemyBasic : Enemy
 {
     [SerializeField]
-    private EnemyBasicShootingSettings _shootSettings;
+    protected EnemyBasicShootingSettings _shootSettings;
+    protected Transform _playerT;
+
+    protected virtual void Awake()
+    {
+        if (PlayerController.Instance)
+            _playerT = PlayerController.Instance.transform;
+    }
 
     protected override void OnEnable()
     {
-        if (EnemiesManager.Instance)
-            EnemiesManager.Instance.AddEnemyToList(transform);
-
+        base.OnEnable();
         StartCoroutine(Shooting());
 
     }
     protected override void OnDisable()
     {
-        if (EnemiesManager.Instance)
-            EnemiesManager.Instance.RemoveEnemyFromList(transform);
-
+        base.OnDisable();
         StopAllCoroutines();
     }
 
@@ -26,7 +29,7 @@ public class EnemyBasic : Enemy
     {
         yield return new WaitForSeconds(_shootSettings.ShootStartDelay);
 
-        while (true)
+        while (_playerT)
         {
             ObjectPooler.Instance.GiveObject(_shootSettings.Ammo, _shootSettings.ShootPosition.position, _shootSettings.ShootPosition.rotation);
             yield return new WaitForSeconds(_shootSettings.Firerate);

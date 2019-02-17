@@ -9327,7 +9327,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4344533935902237991}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.059, z: 1.391}
+  m_LocalPosition: {x: 0, y: -0.059, z: 1.128}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4344533936178937286}
@@ -9440,7 +9440,7 @@ Transform:
   m_GameObject: {fileID: 4344533936179028454}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -5.04, y: 0.65, z: 0.03}
-  m_LocalScale: {x: 1.0668594, y: 1.0668594, z: 1.0668594}
+  m_LocalScale: {x: 1.0668603, y: 1.0668594, z: 1.0668603}
   m_Children:
   - {fileID: 4344533936786662038}
   - {fileID: 4344533935902237992}
@@ -9482,12 +9482,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _yBoundaries: {fileID: 11400000, guid: dd7beee3e62dae346b0746eba56681d6, type: 2}
   _speedSettings:
-    VerticalSpeed: 6.5
+    VerticalSpeed: 7
     HorizontalDefaultSpeed: 2.5
     HorizontalExtraMaxSpeed: 2
-    HorizontalMinSpeed: 1
+    HorizontalMinSpeed: 1.6
     MaxTiltAngle: 15
-  _primaryWeapon: {fileID: 11400000, guid: c442f0b4ad221a34ca8c4b446be57812, type: 2}
+  _primaryWeapon: {fileID: 11400000, guid: 364c14cf7ed8f9a478134fc9d4b66bef, type: 2}
   _secondaryWeapon: {fileID: 11400000, guid: e738051ddc82c25408e1d12dd93d3a3f, type: 2}
   _shootPositionPrimary: {fileID: 4344533935902237992}
   _shootPositionSecondaryL: {fileID: 295138209}

@@ -69,6 +69,8 @@ public class ObjectPooler : MonoBehaviour
 
             if (parent)
                 obj.transform.parent = parent;
+            else
+                obj.transform.parent = null;
 
             obj.SetActive(true);
 

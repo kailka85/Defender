@@ -19,6 +19,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    //The horizontal starting position of the player ship is determined by a certain percentage of the screen width to account for different display aspect ratios.
+    private const float PLAYER_X_OFFSET_RATIO = 0.06f;
+
     [SerializeField]
     private Boundaries _yBoundaries;
 
@@ -51,11 +54,15 @@ public class PlayerController : MonoBehaviour
     private IControlInput _cntrlInput;
 
     public event Action<ControlInputs> ControlInputAssigned = delegate { };
+
+    //Status changes between ready to shoot and reloading.
     public event Action<bool> SecWeaponStatusChanged = delegate { };
 
     private void Start()
     {
         AssignControlInput();
+
+        AssignPlayerStartPosition();
     }
 
     private void AssignControlInput()
@@ -75,11 +82,37 @@ public class PlayerController : MonoBehaviour
         ControlInputAssigned(_controlInputs);
     }
 
+    //Set the player ship near the right edge of the game view while taking into account different screen aspect ratios.
+    private void AssignPlayerStartPosition()
+    {
+        Camera camera = FindObjectOfType<Camera>();
+        Vector3 viewportLeftEdgeNearClip = camera.ViewportToWorldPoint(new Vector3(0, 0.5f, camera.nearClipPlane));
+        Vector3 viewPortLeftEdgeFarClip = camera.ViewportToWorldPoint(new Vector3(0, 0.5f, camera.farClipPlane));
+        Vector3 direction = viewPortLeftEdgeFarClip - viewportLeftEdgeNearClip;
+
+        //Get the position on the game plane at the middle of the left edge of the screen. The game plane is z = 0;
+        float angle = Mathf.Cos(Vector3.Angle(camera.transform.forward, direction) * Mathf.Deg2Rad);
+        float distanceFromNearClipToGamePlane = Mathf.Abs(viewportLeftEdgeNearClip.z) / angle;
+        Vector3 gameViewRightEdgeOnGamePlane = viewportLeftEdgeNearClip + direction.normalized * distanceFromNearClipToGamePlane;
+
+        //Get the start position distance from the left side of the screen as a portion of game view total width.
+        float gameViewWidth = Mathf.Abs(gameViewRightEdgeOnGamePlane.x - camera.transform.position.x) * 2;
+        float playerXOffset = gameViewWidth * PLAYER_X_OFFSET_RATIO;
+
+        //Set the corresponding follow distance offset to the camera.
+        camera.GetComponent<CameraFollowPlayer>().AssignCamFollowXOffset(gameViewWidth * 0.5f - playerXOffset);
+
+        Vector3 playerPosition = gameViewRightEdgeOnGamePlane + transform.forward * playerXOffset;
+
+        transform.position = playerPosition;
+    }
+
     void Update()
     {
         MoveShip();
-        FireGun();
-        LaunchRockets();
+
+        ShootPrimaryWeapon();
+        ShootSecondaryWeapon();
     }
 
     private void MoveShip()
@@ -87,12 +120,12 @@ public class PlayerController : MonoBehaviour
         float horizontalInput = _cntrlInput.GetHorizontalInput;   
         float verticalInput = _cntrlInput.GetVerticalInput;       
 
-        CalculateNewPosition(horizontalInput, verticalInput);
+        SetNewPosition(horizontalInput, verticalInput);
         ClampYPosition();
         TiltShipWithMovement(verticalInput);
     }
 
-    private void CalculateNewPosition(float horizontalInput, float verticalInput)
+    private void SetNewPosition(float horizontalInput, float verticalInput)
     {
         Vector3 verticalMovement = verticalInput * Vector3.up * _speedSettings.VerticalSpeed;
 
@@ -114,7 +147,7 @@ public class PlayerController : MonoBehaviour
         transform.rotation = Quaternion.Euler(transform.eulerAngles.x, transform.eulerAngles.y, xTilt);
     }
 
-    private void FireGun()
+    private void ShootPrimaryWeapon()
     {
         if (_cntrlInput.GetShootPrimaryInput && Time.time > _shootTimePrimary)
         {
@@ -123,7 +156,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void LaunchRockets()
+    private void ShootSecondaryWeapon()
     {
         if(_secondaryReadyToShoot || Time.time > _shootTimeSecondary)
         {
