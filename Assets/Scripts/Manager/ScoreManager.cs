@@ -1,20 +1,8 @@
 ﻿using UnityEngine;
 using TMPro;
 
-public class ScoreManager : MonoBehaviour
+public class ScoreManager : Singleton<ScoreManager>
 {
-    private static ScoreManager _instance;
-    public static ScoreManager Instance
-    {
-        get
-        {
-            if (_instance == null)
-                _instance = FindObjectOfType<ScoreManager>();
-            return _instance;
-        }
-    }
-
-    private GameData _gameData;
     private string _gameDataFileName = "GameData.data";
 
     private int _currentScore;
@@ -31,14 +19,10 @@ public class ScoreManager : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI _currentScoreTxt;
 
-    private void Awake()
-    {
-        _gameData = SaveAndLoad.LoadGameData(_gameDataFileName);
-    }
-
     private void OnEnable()
     {
-        GameManager.Instance.LevelCompleted += OnLevelCompleted;
+        if (GameManager.Instance)
+            GameManager.Instance.LevelCompleted += OnLevelCompleted;
     }
 
     private void OnDisable()
@@ -56,18 +40,19 @@ public class ScoreManager : MonoBehaviour
         }
     }
 
-    private void OnLevelCompleted()
+    private void OnLevelCompleted(int currentLevel)
     {
-        _levelCompletedTxt.text = "Level " + LevelManager.CurrentLevel + " completed";
+        _levelCompletedTxt.text = "Level " + currentLevel + " completed";
         _finalScoreTxt.text = _currentScore.ToString();
 
-        SetHighScore(_gameData);
+         GameData gameData = SaveAndLoad.LoadGameData(_gameDataFileName);
+        SetHighScore(gameData, currentLevel);
     }
 
-    private void SetHighScore(GameData gameData)
+    private void SetHighScore(GameData gameData, int currentLevel)
     {
         int levelHighScore;
-        string currentLevelName = "Level" + LevelManager.CurrentLevel;
+        string currentLevelName = "Level" + currentLevel;
 
         if (gameData.LevelHighScores.ContainsKey(currentLevelName))
         {
@@ -75,6 +60,7 @@ public class ScoreManager : MonoBehaviour
             {
                 gameData.LevelHighScores[currentLevelName] = _currentScore;
                 levelHighScore = _currentScore;
+
                 SaveAndLoad.SaveGameData(gameData, _gameDataFileName);
             }
             else
@@ -86,6 +72,7 @@ public class ScoreManager : MonoBehaviour
         {
             levelHighScore = _currentScore;
             gameData.LevelHighScores.Add(currentLevelName, _currentScore);
+
             SaveAndLoad.SaveGameData(gameData, _gameDataFileName);
         }
 

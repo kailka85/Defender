@@ -2,21 +2,9 @@
 using UnityEngine;
 using TMPro;
 
-public class LevelManager : MonoBehaviour
+public class LevelManager : Singleton<LevelManager>
 {
-    private static LevelManager _instance;
-    public static LevelManager Instance
-    {
-        get
-        {
-            if (_instance == null)
-                _instance = FindObjectOfType<LevelManager>();
-            return _instance;
-        }
-    }
-
-    public static int CurrentLevel { get; set; } = 1;
-
+    private  static int _currentLevel = 1;
 
     private Vector3 _spawnLocation;
 
@@ -26,6 +14,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField]
     private Boundaries _yBoundaries;
 
+    [Space]
     [SerializeField]
     private LevelBaseData _levelData;
 
@@ -39,13 +28,14 @@ public class LevelManager : MonoBehaviour
     private Transform _cameraT;
     private Transform _player;
 
+    [Space]
     [SerializeField]
     private TextMeshProUGUI _levelNumberTxt;
 
     private void Awake()
     {
         _player = PlayerController.Instance.transform;
-        _cameraT = FindObjectOfType<CameraFollowPlayer>().transform;
+        _cameraT = FindObjectOfType<Camera>().transform;
     }
 
     private void OnEnable()
@@ -54,6 +44,8 @@ public class LevelManager : MonoBehaviour
         {
             GameManager.Instance.GamePlayStarted += OnGamePlayStarted;
             GameManager.Instance.GameOver += OnGameOver;
+            GameManager.Instance.MainMenuClicked += OnMainMenuClicked;
+            GameManager.Instance.NextLevelClicked += OnNextLevelClicked;
         }
     }
 
@@ -63,6 +55,8 @@ public class LevelManager : MonoBehaviour
         {
             GameManager.Instance.GamePlayStarted -= OnGamePlayStarted;
             GameManager.Instance.GameOver -= OnGameOver;
+            GameManager.Instance.MainMenuClicked -= OnMainMenuClicked;
+            GameManager.Instance.NextLevelClicked -= OnNextLevelClicked;
         }
     }
 
@@ -73,9 +67,19 @@ public class LevelManager : MonoBehaviour
         AssignSpawnXLocation();
     }
 
+    private void OnMainMenuClicked()
+    {
+        _currentLevel = 1;
+    }
+
+    private void OnNextLevelClicked()
+    {
+        _currentLevel++;
+    }
+
     private void InitializeLevelBaseValues()
     {
-        _enemyReserve = _levelData.EnemyStartReserve * CurrentLevel;
+        _enemyReserve = _levelData.EnemyStartReserve * _currentLevel;
         _enemyReserveOrig = _enemyReserve;
         _spawnDistInterval = _levelData.SpawnStartInterval;
         _spawnDistIntervalOrig = _spawnDistInterval;
@@ -92,8 +96,8 @@ public class LevelManager : MonoBehaviour
         Vector3 direction = viewPortRightEdgeFarClip - viewportRightEdgeNearClip;
 
         //Get the position on the game plane at the middle of the right edge of the screen. The game plane is z = 0;
-        float angle = Mathf.Cos(Vector3.Angle(camera.transform.forward, direction) * Mathf.Deg2Rad);
-        var distanceFromNearClipToGamePlane = Mathf.Abs(viewportRightEdgeNearClip.z) / angle;
+        float angle = Vector3.Angle(camera.transform.forward, direction) * Mathf.Deg2Rad;
+        var distanceFromNearClipToGamePlane = Mathf.Abs(viewportRightEdgeNearClip.z) / Mathf.Cos(angle);
         var spawnLocationPosition = viewportRightEdgeNearClip + direction.normalized * distanceFromNearClipToGamePlane + Vector3.right * SPAWN_X_OFFSET;
 
         _spawnLocation = _cameraT.InverseTransformPoint(spawnLocationPosition);
@@ -101,7 +105,7 @@ public class LevelManager : MonoBehaviour
 
     private void OnGamePlayStarted()
     {
-        _levelNumberTxt.text = "Level " + CurrentLevel;
+        _levelNumberTxt.text = "Level " + _currentLevel;
 
         StartCoroutine(MonitorPlayerProgression());
     }
@@ -150,7 +154,7 @@ public class LevelManager : MonoBehaviour
             yield return null;
         }
 
-        GameManager.Instance.GameStateChanged(GAME_STATE.LEVEL_COMPLETED);
+        GameManager.Instance.GameStateChanged(GAME_STATE.LEVEL_COMPLETED, _currentLevel);
     }
 
     private static bool EnemiesAlive()

@@ -1,19 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectPooler : MonoBehaviour
+public class ObjectPooler : Singleton<ObjectPooler>
 {
-    private static ObjectPooler _instance;
-    public static ObjectPooler Instance
-    {
-        get
-        {
-            if (_instance == null)
-                _instance = FindObjectOfType<ObjectPooler>();
-            return _instance;
-        }
-    }
-
     [SerializeField]
     private PoolableObject[] _poolableObjects;
 

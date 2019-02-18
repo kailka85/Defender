@@ -6,20 +6,9 @@ public enum ControlInputs {
     Mobile
 }
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : Singleton<PlayerController>
 {
-    private static PlayerController _instance;
-    public static PlayerController Instance
-    {
-        get
-        {
-            if (_instance == null)
-                _instance = FindObjectOfType<PlayerController>();
-            return _instance;
-        }
-    }
-
-    //The horizontal starting position of the player ship is determined by a certain percentage of the screen width to account for different display aspect ratios.
+    //The horizontal starting position of the player ship is set according to a certain percentage of the screen width to account for different display aspect ratios.
     private const float PLAYER_X_OFFSET_RATIO = 0.06f;
 
     [SerializeField]
@@ -35,9 +24,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private PlayerWeaponSecondary _secondaryWeapon;
 
-    private float _shootTimePrimary;
-    private float _shootTimeSecondary;
-    private bool _secondaryReadyToShoot;
+    private float _shootTimePrimaryWeapon;
+    private float _shootTimeSecondaryWeapon;
+    private bool _secondaryWeaponReadyToShoot;
 
     [Space]
     [SerializeField]
@@ -55,8 +44,8 @@ public class PlayerController : MonoBehaviour
 
     public event Action<ControlInputs> ControlInputAssigned = delegate { };
 
-    //Status changes between ready to shoot and reloading.
-    public event Action<bool> SecWeaponStatusChanged = delegate { };
+    public event Action SecondaryWeaponReadyToShoot = delegate { };
+    public event Action SecondaryWeaponStartedReloading = delegate { };
 
     private void Start()
     {
@@ -91,8 +80,8 @@ public class PlayerController : MonoBehaviour
         Vector3 direction = viewPortLeftEdgeFarClip - viewportLeftEdgeNearClip;
 
         //Get the position on the game plane at the middle of the left edge of the screen. The game plane is z = 0;
-        float angle = Mathf.Cos(Vector3.Angle(camera.transform.forward, direction) * Mathf.Deg2Rad);
-        float distanceFromNearClipToGamePlane = Mathf.Abs(viewportLeftEdgeNearClip.z) / angle;
+        float angle = Vector3.Angle(camera.transform.forward, direction) * Mathf.Deg2Rad;
+        float distanceFromNearClipToGamePlane = Mathf.Abs(viewportLeftEdgeNearClip.z) / Mathf.Cos(angle);
         Vector3 gameViewRightEdgeOnGamePlane = viewportLeftEdgeNearClip + direction.normalized * distanceFromNearClipToGamePlane;
 
         //Get the start position distance from the left side of the screen as a portion of game view total width.
@@ -149,30 +138,31 @@ public class PlayerController : MonoBehaviour
 
     private void ShootPrimaryWeapon()
     {
-        if (_cntrlInput.GetShootPrimaryInput && Time.time > _shootTimePrimary)
+        if (_cntrlInput.GetShootPrimaryInput && Time.time > _shootTimePrimaryWeapon)
         {
             _primaryWeapon.ShootWeapon(_shootPositionPrimary);
-            _shootTimePrimary = Time.time + _primaryWeapon.ShootDelay;
+            _shootTimePrimaryWeapon = Time.time + _primaryWeapon.ShootDelay;
         }
     }
 
     private void ShootSecondaryWeapon()
     {
-        if(_secondaryReadyToShoot || Time.time > _shootTimeSecondary)
+        if(_secondaryWeaponReadyToShoot || Time.time > _shootTimeSecondaryWeapon)
         {
-            if (!_secondaryReadyToShoot)
+            if (!_secondaryWeaponReadyToShoot)
             {
-                SecWeaponStatusChanged(true);
-                _secondaryReadyToShoot = true;
+                _secondaryWeaponReadyToShoot = true;
+
+                SecondaryWeaponReadyToShoot();
             }
 
             if (_cntrlInput.GetShootSecondaryInput)
             {
                 _secondaryWeapon.ShootWeapon(_shootPositionSecondaryL, _shootPositionSecondaryR);
-                _shootTimeSecondary = Time.time + _secondaryWeapon.ShootDelay;
-                _secondaryReadyToShoot = false;
+                _shootTimeSecondaryWeapon = Time.time + _secondaryWeapon.ShootDelay;
+                _secondaryWeaponReadyToShoot = false;
 
-                SecWeaponStatusChanged(false);
+                SecondaryWeaponStartedReloading();
             }
         }
     }

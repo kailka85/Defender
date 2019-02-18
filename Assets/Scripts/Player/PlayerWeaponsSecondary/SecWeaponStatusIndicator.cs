@@ -13,20 +13,28 @@ public class SecWeaponStatusIndicator : MonoBehaviour
     private void OnEnable()
     {
         if (PlayerController.Instance)
-            PlayerController.Instance.SecWeaponStatusChanged += OnSecWeapStatusChanged;
+        {
+            PlayerController.Instance.SecondaryWeaponStartedReloading += OnStartedReloading;
+            PlayerController.Instance.SecondaryWeaponReadyToShoot += OnReadyToShoot;
+        }
     }
 
     private void OnDisable()
     {
-        if(PlayerController.Instance)
-            PlayerController.Instance.SecWeaponStatusChanged -= OnSecWeapStatusChanged;
+        if (PlayerController.Instance)
+        {
+            PlayerController.Instance.SecondaryWeaponStartedReloading -= OnStartedReloading;
+            PlayerController.Instance.SecondaryWeaponReadyToShoot -= OnReadyToShoot;
+        }
     }
 
-    void OnSecWeapStatusChanged(bool active)
+    private void OnStartedReloading()
     {
-        if (active)
-            _image.color = Color.green;
-        else
-            _image.color = Color.red;
+        _image.color = Color.red;
+    }
+
+    private void OnReadyToShoot()
+    {
+        _image.color = Color.green;
     }
 }

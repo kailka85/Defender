@@ -10,20 +10,8 @@ public enum GAME_STATE
     LEVEL_COMPLETED
 }
 
-public class GameManager : MonoBehaviour
+public class GameManager : Singleton<GameManager>
 {
-    private static GameManager _instance;
-
-    public static GameManager Instance
-    {
-        get
-        {
-            if (_instance == null)
-                _instance = FindObjectOfType<GameManager>();
-            return _instance;
-        }
-    }
-
     private static bool _restarted;
 
     private GAME_STATE _currentState;
@@ -31,7 +19,10 @@ public class GameManager : MonoBehaviour
     public event Action MainMenuEntered = delegate { };
     public event Action GamePlayStarted = delegate { };
     public event Action GameOver = delegate { };
-    public event Action LevelCompleted = delegate { };
+    public event Action<int> LevelCompleted = delegate { };
+
+    public event Action MainMenuClicked = delegate { };
+    public event Action NextLevelClicked = delegate { };
 
     private void Start()
     {
@@ -48,7 +39,7 @@ public class GameManager : MonoBehaviour
             GameStateChanged(GAME_STATE.MAIN_MENU);
     }
 
-    public void GameStateChanged(GAME_STATE newState)
+    public void GameStateChanged(GAME_STATE newState, int currentLevel = 1)
     {
         _currentState = newState;
 
@@ -64,7 +55,7 @@ public class GameManager : MonoBehaviour
                 GameOver();
                 break;
             case GAME_STATE.LEVEL_COMPLETED:
-                LevelCompleted();
+                LevelCompleted(currentLevel);
                 break;
             default:
                 break;
@@ -84,7 +75,7 @@ public class GameManager : MonoBehaviour
     public void ToMainMenu()
     {
         _restarted = false;
-        LevelManager.CurrentLevel = 1;
+        MainMenuClicked();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
@@ -97,7 +88,7 @@ public class GameManager : MonoBehaviour
     public void ToNextLevel()
     {
         _restarted = true;
-        LevelManager.CurrentLevel++;
+        NextLevelClicked();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

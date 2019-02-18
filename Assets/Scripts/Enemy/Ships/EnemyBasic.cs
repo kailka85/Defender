@@ -5,6 +5,7 @@ public class EnemyBasic : Enemy
 {
     [SerializeField]
     protected EnemyBasicShootingSettings _shootSettings;
+
     protected Transform _playerT;
 
     protected virtual void Awake()

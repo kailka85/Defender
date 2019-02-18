@@ -17,18 +17,29 @@ public class LaunchRocketsButton : MonoBehaviour
     private void OnEnable()
     {
         if (PlayerController.Instance)
-            PlayerController.Instance.SecWeaponStatusChanged += OnSecWeapStatusChanged;
+        {
+            PlayerController.Instance.SecondaryWeaponStartedReloading += OnStartedReloading;
+            PlayerController.Instance.SecondaryWeaponReadyToShoot += OnReadyToShoot;
+        }
     }
 
     private void OnDisable()
     {
         if (PlayerController.Instance)
-            PlayerController.Instance.SecWeaponStatusChanged -= OnSecWeapStatusChanged;
+        {
+            PlayerController.Instance.SecondaryWeaponStartedReloading -= OnStartedReloading;
+            PlayerController.Instance.SecondaryWeaponReadyToShoot -= OnReadyToShoot;
+        }
     }
 
-    void OnSecWeapStatusChanged(bool active)
+    private void OnStartedReloading()
     {
-        _launchButton.interactable = active;
+        _launchButton.interactable = false;
+    }
+
+    private void OnReadyToShoot()
+    {
+        _launchButton.interactable = true;
     }
 
     public static bool ShouldLaunchRockets()

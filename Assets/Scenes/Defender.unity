@@ -2106,7 +2106,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 22.7
+  m_fontSize: 23.25
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -2638,7 +2638,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 22.55
+  m_fontSize: 23.3
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -3165,7 +3165,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 19.85
+  m_fontSize: 20.3
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -3618,7 +3618,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 16.9
+  m_fontSize: 17.3
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -4381,7 +4381,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1387589196
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5145,7 +5145,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 47.9
+  m_fontSize: 49
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -5866,16 +5866,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4344533936179062600, guid: cde117e9cda06a14692a2a25b5539f13,
-        type: 3}
-      propertyPath: _controlInputs
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4539654412947808301, guid: cde117e9cda06a14692a2a25b5539f13,
-        type: 3}
-      propertyPath: InitialModule.startLifetime.scalar
-      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cde117e9cda06a14692a2a25b5539f13, type: 3}

@@ -4,6 +4,7 @@ public abstract class Enemy : MonoBehaviour
 {
     [SerializeField]
     private int _enemySize;
+
     public int EnemySize { get { return _enemySize; } }
 
     protected virtual void OnEnable()

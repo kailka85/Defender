@@ -3,6 +3,7 @@
 [System.Serializable]
 public class LevelBaseData
 {
+    [Header("Level start values")]
     [Tooltip("A new enemy is spawned when the player advances this distance. \n" +
             "The distance reduces after each spawn (not below the minimum value however) resulting in increased difficulty.")]
     public float SpawnStartInterval;
@@ -14,5 +15,6 @@ public class LevelBaseData
         "Enemies are spawned until the reserve runs empty. \n")]
     public int EnemyStartReserve;
 
+    [Space]
     public Enemy[] Enemies;
 }

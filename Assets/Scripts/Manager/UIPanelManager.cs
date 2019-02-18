@@ -76,7 +76,7 @@ public class UIPanelManager : MonoBehaviour
         _gameOverPanel.SetActive(true);
     }
 
-    private void OnLevelCompleted()
+    private void OnLevelCompleted(int currentLevel)
     {
         Invoke("DisplayLevelCompletedPanel", LEVEL_COMPLETED_DISPLAY_DELAY);
     }

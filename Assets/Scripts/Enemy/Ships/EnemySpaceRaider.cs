@@ -20,10 +20,10 @@ public class EnemySpaceRaider : EnemyBasic
     {
         base.OnEnable();
 
-        SetMovingTypeRandomly();
+        SetMovingOrStaticRandomly();
     }
 
-    private void SetMovingTypeRandomly()
+    private void SetMovingOrStaticRandomly()
     {
         _isMoving = (Random.value > 0.5f);
 

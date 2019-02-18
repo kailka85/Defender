@@ -9482,7 +9482,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _yBoundaries: {fileID: 11400000, guid: dd7beee3e62dae346b0746eba56681d6, type: 2}
   _speedSettings:
-    VerticalSpeed: 7
+    VerticalSpeed: 6.5
     HorizontalDefaultSpeed: 2.5
     HorizontalExtraMaxSpeed: 2
     HorizontalMinSpeed: 1.6
@@ -10609,7 +10609,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.3
+      scalar: 0.5
       minScalar: 5
       maxCurve:
         serializedVersion: 2

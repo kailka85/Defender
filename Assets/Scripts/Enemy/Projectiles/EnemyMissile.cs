@@ -58,7 +58,7 @@ public class EnemyMissile : MonoBehaviour
 
     private void RotateTowardsPlayer()
     {
-        var dirToPlayer = _playerT.position - transform.position;
+        Vector3 dirToPlayer = _playerT.position - transform.position;
         float signedAngle = Vector3.SignedAngle(transform.forward, dirToPlayer, Vector3.forward);
         transform.Rotate(Vector3.right * signedAngle * _rotateSpeed * Time.deltaTime);
     }
