@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: PlayerRockets
   m_EditorClassIdentifier: 
   ShootDelay: 4
-  Rocket: {fileID: 1128490046, guid: 52bae37bc6083524fb7823d1ea9b0a83, type: 3}
+  Rocket: {fileID: 82, guid: 52bae37bc6083524fb7823d1ea9b0a83, type: 3}

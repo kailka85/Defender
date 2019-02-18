@@ -2638,7 +2638,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 23.3
+  m_fontSize: 20.6
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -3165,7 +3165,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 20.3
+  m_fontSize: 18.65
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -3920,7 +3920,7 @@ MonoBehaviour:
   - Prefab: {fileID: 7777491236694883439, guid: 59cdc16a1a75eca46ac3e29031a75d3b,
       type: 3}
     PreWarmCount: 20
-  - Prefab: {fileID: 1128490046, guid: 52bae37bc6083524fb7823d1ea9b0a83, type: 3}
+  - Prefab: {fileID: 82, guid: 52bae37bc6083524fb7823d1ea9b0a83, type: 3}
     PreWarmCount: 4
   - Prefab: {fileID: 8564691080871076833, guid: 29367f8159012c241bc8af19305737e4,
       type: 3}
@@ -5145,7 +5145,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 49
+  m_fontSize: 44.85
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
